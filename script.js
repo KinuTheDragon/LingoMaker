@@ -260,9 +260,11 @@ function displayPuzzle() {
     let part = compressPuzzle().replaceAll(/=+$/g, "").replaceAll("+", "-").replaceAll("/", "_");
     let url = location.href.split("?")[0] + "?" + part;
     link.setAttribute("url", url);
+    updateSuccess();
 }
 
 function updateSuccess() {
+    if (isEditMode) return;
     puzzle.blocks.filter(b => b.answer).forEach(b => {
         b.input.classList.remove("failure");
         let wasSuccess = b.input.classList.contains("success");
