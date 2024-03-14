@@ -29,6 +29,8 @@ const COLORS = {
     silver: "#bec2cb",
     "tea green": "#77dd77",
     avocado: "#0d363a",
+    monochrome: "linear-gradient(#000000, #ffffff)",
+    "golden coral": "linear-gradient(#ffac18, #fb5a17)",
     none: "#444"
 };
 const SUCCESS_AUDIO = new Audio("success.wav");
