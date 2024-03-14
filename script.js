@@ -245,6 +245,14 @@ function displayPuzzle() {
                     let hinted = answer.slice(0, index + 1) + answer.slice(index + 1).replaceAll(HIDDEN_CHARS, "-");
                     i.placeholder = hinted;
                 });
+                i.parentNode.addEventListener("contextmenu", e => {
+                    e.preventDefault();
+                    let block = puzzle.blocks[i.getAttribute("index")];
+                    let answer = block.answer.split("`")[0];
+                    let index = HIDDEN_CHARS.exec(answer).index;
+                    let hinted = answer.slice(0, index + 1) + answer.slice(index + 1).replaceAll(HIDDEN_CHARS, "-");
+                    i.placeholder = hinted;
+                });
             }
         );
     }
