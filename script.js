@@ -1,3 +1,4 @@
+
 const COLORS = {
     white: "#e6e7e8",
     black: "#000000",
@@ -10,6 +11,7 @@ const COLORS = {
     brown: "#774d2b",
     mint: "#7fffc5",
     magenta: "#ff00dc",
+    lime: "#00ff21",
     gray: "#a0a0a0",
     cream: "#f7e4b6",
     lavender: "#a288dc",
@@ -127,7 +129,7 @@ function displayPuzzle() {
                 let input = document.createElement("input");
                 block.input = input;
                 input.classList.add("answer");
-                input.placeholder = block.answer.replaceAll(/[a-zA-Z]/g, "-");
+                input.placeholder = block.answer.split("`")[0].replaceAll(/[a-zA-Z0-9]/g, "-");
                 blockCell.appendChild(input);
                 input.setAttribute("index", i);
             }
@@ -221,8 +223,8 @@ function displayPuzzle() {
             i => i.addEventListener("input", e => {
                 let guess = i.value.toUpperCase();
                 let block = puzzle.blocks[i.getAttribute("index")];
-                if (guess.length > block.answer.length)
-                    i.value = i.value.slice(block.answer.length);
+                if (guess.length > block.answer.split("`")[0].length)
+                    i.value = i.value.slice(block.answer.split("`")[0].length);
                 puzzle.blocks
                     .filter(block2 => block.x === block2.x && block !== block2)
                     .forEach(block2 => {
@@ -234,12 +236,12 @@ function displayPuzzle() {
                     let wasSuccess = b.input.classList.contains("success");
                     b.input.classList.remove("success");
                     let guess = b.input.value.toUpperCase();
-                    let answer = b.answer.toUpperCase();
-                    if (guess === answer) {
+                    let answers = b.answer.split("`").map(x=>x.toUpperCase());
+                    if (answers.includes(guess)) {
                         b.input.classList.add("success");
                         if (!wasSuccess)
                             play(SUCCESS_AUDIO);
-                    } else if (guess.length >= answer.length) {
+                    } else if (guess.length >= answers[0].length) {
                         b.input.classList.add("failure");
                     }
                 });
