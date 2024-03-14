@@ -28,6 +28,7 @@ button {
 
 .block.no-panel {
     background-color: var(--color);
+    background-image: var(--color);
 }
 
 .block.checkered {
