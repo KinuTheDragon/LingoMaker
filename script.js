@@ -410,7 +410,13 @@ function compressPuzzle() {
 
 function copyPuzzleLink() {
     let btn = document.getElementById("linkBtn");
-    displayPuzzle();
+    if (isEditMode) {
+        displayPuzzle();
+    } else {
+        let answers = [...document.querySelectorAll("input.answer")].map(x =>  x.value);
+        displayPuzzle();
+        document.querySelectorAll("input.answer").forEach((x, i) => {x.value = answers[i];});
+    }
     navigator.clipboard.writeText(
         btn.getAttribute("url")
     );
