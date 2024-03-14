@@ -1,3 +1,4 @@
+const HIDDEN_CHARS = /[a-zA-Z0-9]/g;
 
 const COLORS = {
     white: "#e6e7e8",
@@ -131,7 +132,7 @@ function displayPuzzle() {
                 let input = document.createElement("input");
                 block.input = input;
                 input.classList.add("answer");
-                input.placeholder = block.answer.split("`")[0].replaceAll(/[a-zA-Z0-9]/g, "-");
+                input.placeholder = block.answer.split("`")[0].replaceAll(HIDDEN_CHARS, "-");
                 blockCell.appendChild(input);
                 input.setAttribute("index", i);
             }
@@ -222,19 +223,29 @@ function displayPuzzle() {
         );
     } else {
         document.querySelectorAll("input.answer").forEach(
-            i => i.addEventListener("input", e => {
-                let guess = i.value.toUpperCase();
-                let block = puzzle.blocks[i.getAttribute("index")];
-                if (guess.length > block.answer.split("`")[0].length)
-                    i.value = i.value.slice(block.answer.split("`")[0].length);
-                puzzle.blocks
-                    .filter(block2 => block.x === block2.x && block !== block2)
-                    .forEach(block2 => {
-                        if (block2.input)
-                            block2.input.value = i.value;
-                    });
-                updateSuccess();
-            })
+            i => {
+                i.addEventListener("input", e => {
+                    let guess = i.value.toUpperCase();
+                    let block = puzzle.blocks[i.getAttribute("index")];
+                    if (guess.length > block.answer.split("`")[0].length)
+                        i.value = i.value.slice(block.answer.split("`")[0].length);
+                    puzzle.blocks
+                        .filter(block2 => block.x === block2.x && block !== block2)
+                        .forEach(block2 => {
+                            if (block2.input)
+                                block2.input.value = i.value;
+                        });
+                    updateSuccess();
+                });
+                i.addEventListener("keyup", e => {
+                    if (e.code !== "Insert") return;
+                    let block = puzzle.blocks[i.getAttribute("index")];
+                    let answer = block.answer.split("`")[0];
+                    let index = HIDDEN_CHARS.exec(answer).index;
+                    let hinted = answer.slice(0, index + 1) + answer.slice(index + 1).replaceAll(HIDDEN_CHARS, "-");
+                    i.placeholder = hinted;
+                });
+            }
         );
     }
     let link = document.getElementById("linkBtn");
