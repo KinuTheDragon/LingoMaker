@@ -408,6 +408,16 @@ function compressPuzzle() {
                 .map(x => String.fromCharCode(x)).join(""));
 }
 
+function copyPuzzleLink() {
+    let btn = document.getElementById("linkBtn");
+    displayPuzzle();
+    navigator.clipboard.writeText(
+        btn.getAttribute("url")
+    );
+    btn.textContent = "Copied!";
+    setTimeout(() => {btn.textContent = "Copy puzzle link";}, 500);
+}
+
 document.addEventListener("mousemove", e => {
     let hovered = document.querySelector("td.block:hover");
     let hoveredColor;
