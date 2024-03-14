@@ -231,30 +231,7 @@ function displayPuzzle() {
                         if (block2.input)
                             block2.input.value = i.value;
                     });
-                puzzle.blocks.filter(b => b.answer).forEach(b => {
-                    b.input.classList.remove("failure");
-                    let wasSuccess = b.input.classList.contains("success");
-                    b.input.classList.remove("success");
-                    let guess = b.input.value.toUpperCase();
-                    let answers = b.answer.split("`").map(x=>x.toUpperCase());
-                    if (answers.includes(guess)) {
-                        b.input.classList.add("success");
-                        if (!wasSuccess)
-                            play(SUCCESS_AUDIO);
-                    } else if (guess.length >= answers[0].length) {
-                        b.input.classList.add("failure");
-                    }
-                });
-                let puzzleElement = document.getElementById("puzzle");
-                let wasWin = puzzleElement.classList.contains("win");
-                puzzleElement.classList.remove("win");
-                if (puzzle.blocks.every(
-                    x => !x.answer || x.input.classList.contains("success")
-                )) {
-                    puzzleElement.classList.add("win");
-                    if (!wasWin)
-                        play(WIN_AUDIO);
-                }
+                updateSuccess();
             })
         );
     }
@@ -262,6 +239,33 @@ function displayPuzzle() {
     let part = compressPuzzle().replaceAll(/=+$/g, "").replaceAll("+", "-").replaceAll("/", "_");
     let url = location.href.split("?")[0] + "?" + part;
     link.setAttribute("url", url);
+}
+
+function updateSuccess() {
+    puzzle.blocks.filter(b => b.answer).forEach(b => {
+        b.input.classList.remove("failure");
+        let wasSuccess = b.input.classList.contains("success");
+        b.input.classList.remove("success");
+        let guess = b.input.value.toUpperCase();
+        let answers = b.answer.split("`").map(x=>x.toUpperCase());
+        if (answers.includes(guess)) {
+            b.input.classList.add("success");
+            if (!wasSuccess)
+                play(SUCCESS_AUDIO);
+        } else if (guess.length >= answers[0].length) {
+            b.input.classList.add("failure");
+        }
+    });
+    let puzzleElement = document.getElementById("puzzle");
+    let wasWin = puzzleElement.classList.contains("win");
+    puzzleElement.classList.remove("win");
+    if (puzzle.blocks.every(
+        x => !x.answer || x.input.classList.contains("success")
+    )) {
+        puzzleElement.classList.add("win");
+        if (!wasWin)
+            play(WIN_AUDIO);
+    }
 }
 
 function setup() {
@@ -416,6 +420,7 @@ function copyPuzzleLink() {
         let answers = [...document.querySelectorAll("input.answer")].map(x =>  x.value);
         displayPuzzle();
         document.querySelectorAll("input.answer").forEach((x, i) => {x.value = answers[i];});
+        updateSuccess();
     }
     navigator.clipboard.writeText(
         btn.getAttribute("url")
