@@ -32,6 +32,11 @@ const COLORS = {
     avocado: "#0d363a",
     monochrome: "linear-gradient(#000000, #ffffff)",
     "golden coral": "linear-gradient(#ffac18, #fb5a17)",
+    ketchup: "#861700",
+    mustard: "#7f670a",
+    relish: "#2a5203",
+    "anti-silver": "#2f2d51",
+    burgundy: "#4d0340",
     none: "#444"
 };
 const SUCCESS_AUDIO = new Audio("success.wav");
