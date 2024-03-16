@@ -56,7 +56,10 @@ function toggleEditMode() {
 function play(audio) {
     audio.pause();
     audio.currentTime = 0;
-    setTimeout(() => audio.play(), 150);
+    setTimeout(() => {
+        try {audio.play();}
+        catch (e) {/* Hide error from console */}
+    }, 150);
 }
 
 function displayPuzzle() {
