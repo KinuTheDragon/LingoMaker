@@ -53,13 +53,12 @@ function toggleEditMode() {
     displayPuzzle();
 }
 
+let isFirstPlay = true;
 function play(audio) {
     audio.pause();
     audio.currentTime = 0;
-    setTimeout(() => {
-        try {audio.play();}
-        catch (e) {/* Hide error from console */}
-    }, 150);
+    if (isFirstPlay) isFirstPlay = false;
+    else setTimeout(() => audio.play(), 150);
 }
 
 function displayPuzzle() {
