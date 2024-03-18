@@ -474,3 +474,52 @@ document.addEventListener("mousemove", e => {
     }
     document.getElementById("hovered").innerText = hoveredColor;
 });
+
+function createParticle() {
+    const puzzle = document.querySelector("#puzzle.win");
+    if (!puzzle) return;
+    const rect = puzzle.getBoundingClientRect();
+    const randX = Math.random() * rect.width + rect.left;
+    const randY = Math.random() * rect.height + rect.top;
+    const randSign = Math.floor(Math.random() * 2) * 2 - 1;
+    let x, y;
+    let dxSign, dySign;
+    switch (Math.floor(Math.random() * 4)) {
+        case 0:
+            x = randX;
+            y = rect.top;
+            dxSign = randSign;
+            dySign = -1;
+            break;
+        case 1:
+            x = randX;
+            y = rect.bottom;
+            dxSign = randSign;
+            dySign = 1;
+            break;
+        case 2:
+            x = rect.left;
+            y = randY;
+            dxSign = -1;
+            dySign = randSign;
+            break;
+        case 3:
+            x = rect.right;
+            y = randY;
+            dxSign = 1;
+            dySign = randSign;
+            break;
+    }
+    const particle = document.createElement("div");
+    particle.classList.add("particle");
+    particle.style.left = x + "px";
+    particle.style.top = y + "px";
+    particle.style.setProperty("--dx", Math.random() * 100 * dxSign);
+    particle.style.setProperty("--dy", Math.random() * 100 * dySign);
+    document.body.appendChild(particle);
+    particle.addEventListener("animationend", () => {
+        particle.remove();
+    });
+}
+
+setInterval(createParticle, 1);
