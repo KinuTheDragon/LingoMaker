@@ -61,6 +61,11 @@ function play(audio) {
     else setTimeout(() => audio.play(), 150);
 }
 
+function canHavePanel(shape) {
+    if (shape.startsWith("pipe")) return false;
+    return true;
+}
+
 function displayPuzzle() {
     if (isEditMode) {
         let title = document.getElementById("title");
@@ -116,24 +121,32 @@ function displayPuzzle() {
                 );
         }
         if (isEditMode) {
-            let clueInput = document.createElement("input");
-            block.clueInput = clueInput;
-            clueInput.classList.add("clue");
-            clueInput.value = block.clue;
-            blockCell.appendChild(clueInput);
-            clueInput.setAttribute("index", i);
-            blockCell.appendChild(document.createElement("br"));
-            let input = document.createElement("input");
-            block.input = input;
-            input.classList.add("answer");
-            input.value = block.answer ?? "";
-            blockCell.appendChild(input);
-            input.setAttribute("index", i);
+            if (block.shape && block.shape !== "block") {
+                blockCell.classList.add("shape-" + block.shape);
+                if (!canHavePanel(block.shape))
+                    blockCell.classList.add("no-panel");
+            } else {
+                let clueInput = document.createElement("input");
+                block.clueInput = clueInput;
+                clueInput.classList.add("clue");
+                clueInput.value = block.clue;
+                blockCell.appendChild(clueInput);
+                clueInput.setAttribute("index", i);
+                blockCell.appendChild(document.createElement("br"));
+                let input = document.createElement("input");
+                block.input = input;
+                input.classList.add("answer");
+                input.value = block.answer ?? "";
+                blockCell.appendChild(input);
+                input.setAttribute("index", i);
+            }
         } else {
             blockCell.appendChild(
                 document.createTextNode(block.clue.toUpperCase())
             );
             if (!block.clue) blockCell.classList.add("no-panel");
+            if (block.shape && block.shape !== "block")
+                blockCell.classList.add("shape-" + block.shape);
             if (block.answer) {
                 blockCell.appendChild(document.createElement("br"));
                 let input = document.createElement("input");
@@ -194,6 +207,8 @@ function displayPuzzle() {
                 } else {
                     block.color = color1;
                 }
+                block.shape = document.getElementById("shape").value;
+                if (!canHavePanel(block.shape)) block.clue = "";
                 puzzle.blocks.push(block);
                 displayPuzzle();
             })
@@ -204,6 +219,33 @@ function displayPuzzle() {
                     e.preventDefault();
                     puzzle.blocks.splice(+b.getAttribute("index"), 1);
                     displayPuzzle();
+                });
+                b.addEventListener("auxclick", e => {
+                    let block = puzzle.blocks[b.getAttribute("index")];
+                    let isCheckered = !!block.color1;
+                    document.getElementById("checker").checked = isCheckered;
+                    document.getElementById("shape").value = block.shape ?? "block";
+                    if (isCheckered) {
+                        if (block.color1.startsWith("#")) {
+                            document.getElementById("hexColor1").value = block.color1;
+                            document.getElementById("namedColors").value = "$HEX";
+                        } else {
+                            document.getElementById("namedColors").value = block.color1;
+                        }
+                        if (block.color2.startsWith("#")) {
+                            document.getElementById("hexColor2").value = block.color2;
+                            document.getElementById("namedColors2").value = "$HEX";
+                        } else {
+                            document.getElementById("namedColors2").value = block.color2;
+                        }
+                    } else {
+                        if (block.color.startsWith("#")) {
+                            document.getElementById("hexColor1").value = block.color;
+                            document.getElementById("namedColors").value = "$HEX";
+                        } else {
+                            document.getElementById("namedColors").value = block.color;
+                        }
+                    }
                 });
                 b.addEventListener("click", e => {
                     if (e.target !== b) return;
@@ -223,6 +265,11 @@ function displayPuzzle() {
                         block.color = color1;
                         block.color1 = undefined;
                         block.color2 = undefined;
+                    }
+                    block.shape = document.getElementById("shape").value;
+                    if (!canHavePanel(block.shape)) {
+                        block.clue = "";
+                        block.answer = "";
                     }
                     displayPuzzle();
                 });
@@ -426,7 +473,8 @@ function compressPuzzle() {
         let outputBlock = {
             clue: block.clue,
             x: block.x,
-            y: block.y
+            y: block.y,
+            shape: block.shape
         };
         if (block.color) outputBlock.color = block.color;
         else {

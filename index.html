@@ -10,7 +10,7 @@
     <body onload="setup()">
         <h1>Lingo Maker</h1>
         <h2>Made by KinuTheDragon</h2>
-        Editing controls: Click to add or set color, right-click to remove<br/>
+        Editing controls: Click to add or set color/shape, right-click to remove, middle-click to copy color/shape<br/>
         For multiple possible answers, separate them with ` (backticks)<br/>
         Playing controls: Insert to get a hint for the currently selected panel, right-click a panel for a hint as well<br/>
         <button id="linkBtn" onclick="copyPuzzleLink()">Copy puzzle link</button>
@@ -35,6 +35,26 @@
         <label for="checker">Checkered:</label>
         <input class="editBtn" type="checkbox" id="checker" onclick="updateDisabled()"></input>
         <button class="editBtn" id="swap" onclick="swapColors()">Swap colors</button><br/>
+        <label for="shape">Block shape:</label>
+        <select id="shape" class="editBtn">
+            <option value="block" selected>Block (█)</option>
+            <option value="pipe0">Small block (·)</option>
+            <option value="pipe1">Upward dead-end connector (╵)</option>
+            <option value="pipe2">Downward dead-end connector (╷)</option>
+            <option value="pipe4">Leftward dead-end connector (╴)</option>
+            <option value="pipe8">Rightward dead-end connector (╶)</option>
+            <option value="pipe3">Vertical pipe (│)</option>
+            <option value="pipe12">Horizontal pipe (─)</option>
+            <option value="pipe5">Up-left pipe (┘)</option>
+            <option value="pipe9">Up-right pipe (└)</option>
+            <option value="pipe6">Down-left pipe (┐)</option>
+            <option value="pipe10">Down-right pipe (┌)</option>
+            <option value="pipe7">Up-down-left T-pipe (┤)</option>
+            <option value="pipe11">Up-down-right T-pipe (├)</option>
+            <option value="pipe13">Up-left-right T-pipe (┴)</option>
+            <option value="pipe14">Down-left-right T-pipe (┬)</option>
+            <option value="pipe15">Cross-pipe (┼)</option>
+        </select>
         <h1 id="title">Puzzle</h1>
         Hovered color: <span id="hovered">No block</span>
         <div style="overflow-x:auto">

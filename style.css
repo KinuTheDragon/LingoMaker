@@ -182,3 +182,44 @@ button {
     position: absolute;
     animation: fly-off 1s linear forwards;
 }
+
+.shape-pipe0,  .shape-pipe1,  .shape-pipe2,  .shape-pipe3,
+.shape-pipe4,  .shape-pipe5,  .shape-pipe6,  .shape-pipe7,
+.shape-pipe8,  .shape-pipe9,  .shape-pipe10, .shape-pipe11,
+.shape-pipe12, .shape-pipe13, .shape-pipe14, .shape-pipe15 {
+    --top: ;
+    --right: ;
+    --bottom: ;
+    --left: ;
+    clip-path: polygon(
+        25% 25%,
+        var(--top)
+        75% 25%,
+        var(--right)
+        75% 75%,
+        var(--bottom)
+        25% 75%,
+        var(--left)
+        25% 25%
+    );
+}
+
+.shape-pipe1, .shape-pipe3,  .shape-pipe5,  .shape-pipe7,
+.shape-pipe9, .shape-pipe11, .shape-pipe13, .shape-pipe15 {
+    --top: 25% 0%, 75% 0%,
+}
+
+.shape-pipe2,  .shape-pipe3,  .shape-pipe6,  .shape-pipe7,
+.shape-pipe10, .shape-pipe11, .shape-pipe14, .shape-pipe15 {
+    --bottom: 75% 100%, 25% 100%,
+}
+
+.shape-pipe4,  .shape-pipe5,  .shape-pipe6,  .shape-pipe7,
+.shape-pipe12, .shape-pipe13, .shape-pipe14, .shape-pipe15 {
+    --left: 0% 75%, 0% 25%,
+}
+
+.shape-pipe8,  .shape-pipe9,  .shape-pipe10, .shape-pipe11,
+.shape-pipe12, .shape-pipe13, .shape-pipe14, .shape-pipe15 {
+    --right: 100% 25%, 100% 75%,
+}
