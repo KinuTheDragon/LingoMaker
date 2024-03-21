@@ -127,6 +127,7 @@ function displayPuzzle() {
                     blockCell.classList.add("no-panel");
             } else {
                 let clueInput = document.createElement("input");
+                clueInput.tabIndex = (block.x * 3 + block.y) * 2 + 1;
                 block.clueInput = clueInput;
                 clueInput.classList.add("clue");
                 clueInput.value = block.clue;
@@ -134,6 +135,7 @@ function displayPuzzle() {
                 clueInput.setAttribute("index", i);
                 blockCell.appendChild(document.createElement("br"));
                 let input = document.createElement("input");
+                input.tabIndex = (block.x * 3 + block.y) * 2 + 2;
                 block.input = input;
                 input.classList.add("answer");
                 input.value = block.answer ?? "";
@@ -150,6 +152,7 @@ function displayPuzzle() {
             if (block.answer) {
                 blockCell.appendChild(document.createElement("br"));
                 let input = document.createElement("input");
+                input.tabIndex = block.x * 3 + block.y + 1;
                 block.input = input;
                 input.classList.add("answer");
                 input.placeholder = block.answer.split("`")[0].replaceAll(HIDDEN_CHARS, "-");
@@ -281,7 +284,7 @@ function displayPuzzle() {
                 i.addEventListener("input", e => {
                     let guess = i.value.toUpperCase();
                     let block = puzzle.blocks[i.getAttribute("index")];
-                    if (guess.length > block.answer.split("`")[0].length)
+                    if (normalizeText(guess).length > normalizeText(block.answer.split("`")[0]).length)
                         i.value = i.value.slice(block.answer.split("`")[0].length);
                     puzzle.blocks
                         .filter(block2 => block.x === block2.x && block !== block2)
@@ -317,19 +320,31 @@ function displayPuzzle() {
     updateSuccess();
 }
 
+function normalizeText(text) {
+    return text.replaceAll(/ +/g, "").replaceAll(/[‘’]/g, "'").replaceAll(/[“”]/g, '"');
+}
+
 function updateSuccess() {
     if (isEditMode) return;
     puzzle.blocks.filter(b => b.answer).forEach(b => {
         b.input.classList.remove("failure");
         let wasSuccess = b.input.classList.contains("success");
         b.input.classList.remove("success");
-        let guess = b.input.value.toUpperCase();
-        let answers = b.answer.split("`").map(x=>x.toUpperCase());
-        if (answers.includes(guess)) {
-            b.input.classList.add("success");
-            if (!wasSuccess)
-                play(SUCCESS_AUDIO);
-        } else if (guess.length >= answers[0].length) {
+        let guess = normalizeText(b.input.value.toUpperCase());
+        let answers = b.answer.split("`").map(x => x.toUpperCase());
+        let found = false;
+        for (let answer of answers) {
+            if (normalizeText(answer) === guess) {
+                b.input.classList.add("success");
+                if (!wasSuccess) {
+                    b.input.value = answer;
+                    play(SUCCESS_AUDIO);
+                }
+                found = true;
+                break;
+            }
+        }
+        if (!found && guess.length >= answers[0].length) {
             b.input.classList.add("failure");
         }
     });
@@ -564,7 +579,7 @@ function createParticle() {
     particle.style.top = y + "px";
     particle.style.setProperty("--dx", Math.random() * 100 * dxSign);
     particle.style.setProperty("--dy", Math.random() * 100 * dySign);
-    document.body.appendChild(particle);
+    document.getElementById("particles").appendChild(particle);
     particle.addEventListener("animationend", () => {
         particle.remove();
     });

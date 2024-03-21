@@ -1,0 +1,3 @@
+Other block shapes (e.g. halves)
+Fix particles emitting from wrong position
+Fix particles expanding body
