@@ -146,7 +146,7 @@ function displayPuzzle() {
             blockCell.appendChild(
                 document.createTextNode(block.clue.toUpperCase())
             );
-            if (!block.clue) blockCell.classList.add("no-panel");
+            if (!block.clue && !block.answer) blockCell.classList.add("no-panel");
             if (block.shape && block.shape !== "block")
                 blockCell.classList.add("shape-" + block.shape);
             if (block.answer) {
