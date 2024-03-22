@@ -39,6 +39,13 @@ const COLORS = {
     burgundy: "#4d0340",
     none: "#444"
 };
+const DUAL_TYPE_NAMES = {
+    checker: "Checkered",
+    vhalf: "Vertical halves",
+    hhalf: "Horizontal halves",
+    cvhalf: "Centered vertical halves",
+    chhalf: "Centered horizontal halves"
+}
 const SUCCESS_AUDIO = new Audio("success.wav");
 const WIN_AUDIO = new Audio("win.mp3");
 
@@ -106,12 +113,34 @@ function displayPuzzle() {
         blockCell.classList.add("block");
         blockCell.setAttribute("index", i);
         if (block.color1) {
-            blockCell.classList.add("checkered");
-            for (let i = 0; i < 4; i++) {
-                let checker = document.createElement("div");
-                checker.classList.add("checker" + i);
-                checker.classList.add("checker");
-                blockCell.appendChild(checker);
+            blockCell.classList.add("dual-" + (block.dualType ?? "checker"));
+            switch (block.dualType ?? "checker") {
+                case "checker":
+                    for (let i = 0; i < 4; i++) {
+                        let checker = document.createElement("div");
+                        checker.classList.add("checker" + i);
+                        checker.classList.add("checker");
+                        blockCell.appendChild(checker);
+                    }
+                    break;
+                case "hhalf":
+                case "vhalf":
+                    for (let i = 0; i < 2; i++) {
+                        let half = document.createElement("div");
+                        half.classList.add(block.dualType + i);
+                        half.classList.add(block.dualType);
+                        blockCell.appendChild(half);
+                    }
+                    break;
+                case "chhalf":
+                case "cvhalf":
+                    for (let i = 0; i < 3; i++) {
+                        let half = document.createElement("div");
+                        half.classList.add(block.dualType + i);
+                        half.classList.add(block.dualType);
+                        blockCell.appendChild(half);
+                    }
+                    break;
             }
         }
         for (let key of ["color", "color1", "color2"]) {
@@ -193,7 +222,7 @@ function displayPuzzle() {
                 const index = d => [...d.parentNode.childNodes].indexOf(d);
                 let x = index(n);
                 let y = index(n.parentNode);
-                let checkered = document.getElementById("checker").checked;
+                let dualType = document.getElementById("duals").value;
                 let color1 = document.getElementById("namedColors").value;
                 color1 = color1 === "$HEX" ?
                     document.getElementById("hexColor1").value : color1;
@@ -202,9 +231,10 @@ function displayPuzzle() {
                     document.getElementById("hexColor2").value : color2;
                 let block = {
                     clue: "clue",
+                    dualType,
                     x, y
                 };
-                if (checkered) {
+                if (dualType) {
                     block.color1 = color1;
                     block.color2 = color2;
                 } else {
@@ -225,10 +255,10 @@ function displayPuzzle() {
                 });
                 b.addEventListener("auxclick", e => {
                     let block = puzzle.blocks[b.getAttribute("index")];
-                    let isCheckered = !!block.color1;
-                    document.getElementById("checker").checked = isCheckered;
+                    let dualType = block.dualType;
+                    document.getElementById("duals").value = block.color1 ? (dualType ?? "checker") : "";
                     document.getElementById("shape").value = block.shape ?? "block";
-                    if (isCheckered) {
+                    if (dualType) {
                         if (block.color1.startsWith("#")) {
                             document.getElementById("hexColor1").value = block.color1;
                             document.getElementById("namedColors").value = "$HEX";
@@ -253,14 +283,14 @@ function displayPuzzle() {
                 b.addEventListener("click", e => {
                     if (e.target !== b) return;
                     let block = puzzle.blocks[b.getAttribute("index")];
-                    let checkered = document.getElementById("checker").checked;
+                    let dualType = document.getElementById("duals").value;
                     let color1 = document.getElementById("namedColors").value;
                     color1 = color1 === "$HEX" ?
                         document.getElementById("hexColor1").value : color1;
                     let color2 = document.getElementById("namedColors2").value;
                     color2 = color2 === "$HEX" ?
                         document.getElementById("hexColor2").value : color2;
-                    if (checkered) {
+                    if (dualType) {
                         block.color = undefined;
                         block.color1 = color1;
                         block.color2 = color2;
@@ -269,6 +299,7 @@ function displayPuzzle() {
                         block.color1 = undefined;
                         block.color2 = undefined;
                     }
+                    block.dualType = dualType;
                     block.shape = document.getElementById("shape").value;
                     if (!canHavePanel(block.shape)) {
                         block.clue = "";
@@ -389,7 +420,7 @@ function updateDisabled() {
         document.getElementById("hexColor1").disabled = true;
     if (document.getElementById("namedColors2").value !== "$HEX")
         document.getElementById("hexColor2").disabled = true;
-    if (!document.getElementById("checker").checked) {
+    if (!document.getElementById("duals").value) {
         document.getElementById("swap").disabled = true;
         document.getElementById("namedColors2").disabled = true;
         document.getElementById("hexColor2").disabled = true;
@@ -495,6 +526,7 @@ function compressPuzzle() {
         else {
             outputBlock.color1 = block.color1;
             outputBlock.color2 = block.color2;
+            outputBlock.dualType = block.dualType ?? "checker";
         }
         if (block.answer) outputBlock.answer = block.answer;
         output.blocks.push(outputBlock);
@@ -530,7 +562,8 @@ document.addEventListener("mousemove", e => {
         if (block.color) {
             hoveredColor = block.color.replaceAll(/\b([a-z])/g, (_, x) => x.toUpperCase());
         } else {
-            hoveredColor = "Checkered - " + block.color1.replaceAll(/\b([a-z])/g, (_, x) => x.toUpperCase()) + " and " + block.color2.replaceAll(/\b([a-z])/g, (_, x) => x.toUpperCase());
+            let dualTypeName = DUAL_TYPE_NAMES[block.dualType ?? "checker"];
+            hoveredColor = dualTypeName + " - " + block.color1.replaceAll(/\b([a-z])/g, (_, x) => x.toUpperCase()) + " and " + block.color2.replaceAll(/\b([a-z])/g, (_, x) => x.toUpperCase());
         }
     } else {
         hoveredColor = "No color";

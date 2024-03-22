@@ -32,8 +32,15 @@
             <option value="$HEX">Hex color</option>
         </select>
         <input type="color" id="hexColor2" class="editBtn"></input><br/>
-        <label for="checker">Checkered:</label>
-        <input class="editBtn" type="checkbox" id="checker" onclick="updateDisabled()"></input>
+        <label for="duals">Dual color type:</label>
+        <select class="editBtn" id="duals" onchange="updateDisabled()">
+            <option value="">Single color</option>
+            <option value="checker">Checkered</option>
+            <option value="vhalf">Vertical halves</option>
+            <option value="hhalf">Horizontal halves</option>
+            <option value="cvhalf">Centered vertical halves</option>
+            <option value="chhalf">Centered horizontal halves</option>
+        </select>
         <button class="editBtn" id="swap" onclick="swapColors()">Swap colors</button><br/>
         <label for="shape">Block shape:</label>
         <select id="shape" class="editBtn">

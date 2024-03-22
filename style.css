@@ -36,7 +36,7 @@ button {
     border-image: initial;
 }
 
-.checker {
+.checker, .vhalf, .hhalf, .cvhalf, .chhalf {
     width: 0;
     height: 0;
     display: block;
@@ -49,20 +49,56 @@ button {
     content: "";
 }
 
-.checker0::after, .checker2::after {
+.vhalf::after, .cvhalf::after {
+    position: absolute;
+    height: 114px;
+    content: "";
+    top: -6px;
+}
+.vhalf::after, .cvhalf1::after {
+    width: 57px;
+}
+.cvhalf0::after, .cvhalf2::after {
+    width: 28.5px;
+}
+
+.hhalf::after, .chhalf::after {
+    position: absolute;
+    width: 114px;
+    content: "";
+    left: -6px;
+}
+.hhalf::after, .chhalf1::after {
+    height: 57px;
+}
+.chhalf0::after, .chhalf2::after {
+    height: 28.5px;
+}
+
+.checker0::after, .checker2::after,
+.vhalf0::after, .cvhalf0::after, .cvhalf2::after,
+.hhalf0::after, .chhalf0::after, .chhalf2::after {
     background-color: var(--color1);
     background-image: var(--color1);
 }
 
-.checker1::after, .checker3::after {
+.checker1::after, .checker3::after,
+.vhalf1::after, .cvhalf1::after,
+.hhalf1::after, .chhalf1::after {
     background-color: var(--color2);
     background-image: var(--color2);
 }
 
-.checker0::after, .checker3::after {left: -6px;}
-.checker1::after, .checker2::after {right: -6px;}
-.checker0::after, .checker1::after {top: -6px;}
-.checker2::after, .checker3::after {bottom: -6px;}
+.checker0::after, .checker3::after,
+.vhalf0::after, .cvhalf0::after {left: -6px;}
+.checker1::after, .checker2::after,
+.vhalf1::after, .cvhalf2::after {right: -6px;}
+.checker0::after, .checker1::after,
+.hhalf0::after, .chhalf0::after {top: -6px;}
+.checker2::after, .checker3::after,
+.hhalf1::after, .chhalf2::after {bottom: -6px;}
+.cvhalf1::after {left: 22.5px;}
+.chhalf1::after {top: 22.5px;}
 
 .block:not(.no-panel) .checker0::after {
     clip-path: polygon(
@@ -102,6 +138,86 @@ button {
         6px calc(100% - 6px),
         6px 0%,
         0% 0%
+    );
+}
+
+.block:not(.no-panel) .vhalf0::after,
+.block:not(.no-panel) .cvhalf0::after {
+    clip-path: polygon(
+        0% 0%,
+        100% 0%,
+        100% 6px,
+        6px 6px,
+        6px calc(100% - 6px),
+        100% calc(100% - 6px),
+        100% 100%,
+        0% 100%
+    );
+}
+.block:not(.no-panel) .vhalf1::after,
+.block:not(.no-panel) .cvhalf2::after {
+    clip-path: polygon(
+        100% 0%,
+        0% 0%,
+        0% 6px,
+        calc(100% - 6px) 6px,
+        calc(100% - 6px) calc(100% - 6px),
+        0% calc(100% - 6px),
+        0% 100%,
+        100% 100%
+    );
+}
+
+.block:not(.no-panel) .hhalf0::after,
+.block:not(.no-panel) .chhalf0::after {
+    clip-path: polygon(
+        0% 0%,
+        0% 100%,
+        6px 100%,
+        6px 6px,
+        calc(100% - 6px) 6px,
+        calc(100% - 6px) 100%,
+        100% 100%,
+        100% 0%
+    );
+}
+.block:not(.no-panel) .hhalf1::after,
+.block:not(.no-panel) .chhalf2::after {
+    clip-path: polygon(
+        0% 100%,
+        0% 0%,
+        6px 0%,
+        6px calc(100% - 6px),
+        calc(100% - 6px) calc(100% - 6px),
+        calc(100% - 6px) 0%,
+        100% 0%,
+        100% 100%
+    );
+}
+
+.block:not(.no-panel) .cvhalf1::after {
+    clip-path: polygon(
+        -100% 0%,
+        200% 0%,
+        200% 100%,
+        -100% 100%,
+        -100% calc(100% - 6px),
+        calc(200% - 6px) calc(100% - 6px),
+        calc(200% - 6px) 6px,
+        -100% 6px
+    );
+}
+
+.block:not(.no-panel) .chhalf1::after {
+    clip-path: polygon(
+        0% -100%,
+        0% 200%,
+        100% 200%,
+        100% -100%,
+        calc(100% - 6px) -100%,
+        calc(100% - 6px) calc(200% - 6px),
+        6px calc(200% - 6px),
+        6px -100%
     );
 }
 
