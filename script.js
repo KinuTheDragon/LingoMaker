@@ -312,7 +312,7 @@ function displayPuzzle() {
     } else {
         document.querySelectorAll("input.answer").forEach(
             i => {
-                i.addEventListener("input", e => {
+                i.addEventListener("keydown", e => {
                     let guess = i.value.toUpperCase();
                     let block = puzzle.blocks[i.getAttribute("index")];
                     if (normalizeText(guess).length > normalizeText(block.answer.split("`")[0]).length)
