@@ -505,11 +505,11 @@ function loadCompressedPuzzle(data) {
         puzzle = JSON.parse(output);
         switch (puzzle.version) {
             case 1:
-                puzzle.title = atob(puzzle.title);
+                puzzle.title = unescape(atob(puzzle.title));
                 puzzle.blocks.forEach(b => {
-                    b.clue = atob(b.clue);
+                    b.clue = unescape(atob(b.clue));
                     if (b.answer)
-                        b.answer = atob(b.answer);
+                        b.answer = unescape(atob(b.answer));
                 });
         }
     } catch (err) {
@@ -522,12 +522,12 @@ function compressPuzzle() {
         cols: puzzle.cols,
         rows: puzzle.rows,
         blocks: [],
-        title: btoa(puzzle.title),
+        title: btoa(escape(puzzle.title)),
         version: 1
     };
     for (let block of puzzle.blocks) {
         let outputBlock = {
-            clue: btoa(block.clue),
+            clue: btoa(escape(block.clue)),
             x: block.x,
             y: block.y,
             shape: block.shape
@@ -538,7 +538,7 @@ function compressPuzzle() {
             outputBlock.color2 = block.color2;
             outputBlock.dualType = block.dualType ?? "checker";
         }
-        if (block.answer) outputBlock.answer = btoa(block.answer);
+        if (block.answer) outputBlock.answer = btoa(escape(block.answer));
         output.blocks.push(outputBlock);
     }
     let json = JSON.stringify(output);
