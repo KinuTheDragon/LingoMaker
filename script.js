@@ -503,6 +503,15 @@ function loadCompressedPuzzle(data) {
         let inflated = pako.inflate(arr);
         let output = [...inflated].map(x => String.fromCharCode(x)).join("");
         puzzle = JSON.parse(output);
+        switch (puzzle.version) {
+            case 1:
+                puzzle.title = atob(puzzle.title);
+                puzzle.blocks.forEach(b => {
+                    b.clue = atob(b.clue);
+                    if (b.answer)
+                        b.answer = atob(b.answer);
+                });
+        }
     } catch (err) {
         puzzle = {cols: 1, rows: 3, title: "Puzzle", blocks: []};
     }
@@ -513,11 +522,12 @@ function compressPuzzle() {
         cols: puzzle.cols,
         rows: puzzle.rows,
         blocks: [],
-        title: puzzle.title
+        title: btoa(puzzle.title),
+        version: 1
     };
     for (let block of puzzle.blocks) {
         let outputBlock = {
-            clue: block.clue,
+            clue: btoa(block.clue),
             x: block.x,
             y: block.y,
             shape: block.shape
@@ -528,11 +538,11 @@ function compressPuzzle() {
             outputBlock.color2 = block.color2;
             outputBlock.dualType = block.dualType ?? "checker";
         }
-        if (block.answer) outputBlock.answer = block.answer;
+        if (block.answer) outputBlock.answer = btoa(block.answer);
         output.blocks.push(outputBlock);
     }
-    let base64d = JSON.stringify(output);
-    let arr = new Uint8Array([...base64d].map(x => x.charCodeAt(0)));
+    let json = JSON.stringify(output);
+    let arr = new Uint8Array([...json].map(x => x.charCodeAt(0)));
     return btoa([...pako.deflate(arr)]
                 .map(x => String.fromCharCode(x)).join(""));
 }
