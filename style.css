@@ -16,6 +16,14 @@ button {
     border-radius: 10px;
 }
 
+a {
+    color: #0f0;
+}
+
+a:hover, a:active {
+    color: #0ff;
+}
+
 .block {
     border: 6px solid;
     border-color: var(--color);
