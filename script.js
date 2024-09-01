@@ -512,7 +512,7 @@ function loadCompressedPuzzle(data) {
         puzzle.linkedColumns = true;
         switch (puzzle.version) {
             case 2:
-                puzzle.linkedColumns = b.linked;
+                puzzle.linkedColumns = puzzle.linked;
             case 1:
                 puzzle.title = unescape(atob(puzzle.title));
                 puzzle.blocks.forEach(b => {
