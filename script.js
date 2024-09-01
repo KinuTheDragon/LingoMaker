@@ -509,7 +509,10 @@ function loadCompressedPuzzle(data) {
         let inflated = pako.inflate(arr);
         let output = [...inflated].map(x => String.fromCharCode(x)).join("");
         puzzle = JSON.parse(output);
+        puzzle.linkedColumns = true;
         switch (puzzle.version) {
+            case 2:
+                puzzle.linkedColumns = b.linked;
             case 1:
                 puzzle.title = unescape(atob(puzzle.title));
                 puzzle.blocks.forEach(b => {
@@ -517,9 +520,6 @@ function loadCompressedPuzzle(data) {
                     if (b.answer)
                         b.answer = unescape(atob(b.answer));
                 });
-                puzzle.linkedColumns = true;
-            case 2:
-                puzzle.linkedColumns = b.linked;
         }
     } catch (err) {
         puzzle = {
