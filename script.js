@@ -89,6 +89,7 @@ function displayPuzzle() {
         title.removeChild(title.firstChild);
         title.appendChild(document.createTextNode(puzzle.title || "Puzzle"));
     }
+    document.getElementById("linkthem").checked = puzzle.linkedColumns;
     let puzzleDisplay = document.getElementById("puzzle");
     puzzleDisplay.classList.remove("win");
     while (puzzleDisplay.firstChild)
@@ -317,12 +318,13 @@ function displayPuzzle() {
                     let block = puzzle.blocks[i.getAttribute("index")];
                     if (normalizeText(guess).length > normalizeText(block.answer.split("`")[0]).length)
                         i.value = i.value.slice(block.answer.split("`")[0].length);
-                    puzzle.blocks
-                        .filter(block2 => block.x === block2.x && block !== block2)
-                        .forEach(block2 => {
-                            if (block2.input)
-                                block2.input.value = i.value;
-                        });
+                    if (puzzle.linkedColumns)
+                        puzzle.blocks
+                            .filter(block2 => block.x === block2.x && block !== block2)
+                            .forEach(block2 => {
+                                if (block2.input)
+                                    block2.input.value = i.value;
+                            });
                     updateSuccess();
                 });
                 i.addEventListener("keyup", e => {
@@ -497,6 +499,10 @@ function removeRowBottom() {
     }
 }
 
+document.getElementById("linkthem").addEventListener("input", e => {
+    puzzle.linkedColumns = e.target.checked;
+});
+
 function loadCompressedPuzzle(data) {
     try {
         let arr = new Uint8Array([...atob(data)].map(x => x.charCodeAt(0)));
@@ -511,9 +517,16 @@ function loadCompressedPuzzle(data) {
                     if (b.answer)
                         b.answer = unescape(atob(b.answer));
                 });
+                puzzle.linkedColumns = true;
+            case 2:
+                puzzle.linkedColumns = b.linked;
         }
     } catch (err) {
-        puzzle = {cols: 1, rows: 3, title: "Puzzle", blocks: []};
+        puzzle = {
+            cols: 1, rows: 3,
+            title: "Puzzle", blocks: [],
+            linkedColumns: true
+        };
     }
 }
 
@@ -523,7 +536,8 @@ function compressPuzzle() {
         rows: puzzle.rows,
         blocks: [],
         title: btoa(escape(puzzle.title)),
-        version: 1
+        linked: puzzle.linkedColumns,
+        version: 2
     };
     for (let block of puzzle.blocks) {
         let outputBlock = {
