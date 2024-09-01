@@ -528,6 +528,7 @@ function loadCompressedPuzzle(data) {
             linkedColumns: true
         };
     }
+    document.getElementById("linkthem").checked = puzzle.linkedColumns;
 }
 
 function compressPuzzle() {
@@ -566,7 +567,7 @@ function copyPuzzleLink() {
     if (isEditMode) {
         displayPuzzle();
     } else {
-        let answers = [...document.querySelectorAll("input.answer")].map(x =>  x.value);
+        let answers = [...document.querySelectorAll("input.answer")].map(x => x.value);
         displayPuzzle();
         document.querySelectorAll("input.answer").forEach((x, i) => {x.value = answers[i];});
         updateSuccess();
