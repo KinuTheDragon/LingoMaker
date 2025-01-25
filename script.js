@@ -37,6 +37,11 @@ const COLORS = {
     relish: "#2a5203",
     "anti-silver": "#2f2d51",
     burgundy: "#4d0340",
+    celeste: "#8bd8dd",
+    khaki: "#937e4e",
+    emerald: "#013500",
+    shade: "#330033",
+    navy: "#000070",
     none: "#444"
 };
 const DUAL_TYPE_NAMES = {
@@ -240,6 +245,7 @@ function displayPuzzle() {
                     block.color2 = color2;
                 } else {
                     block.color = color1;
+                    if (block.color === "silver") block.clue = "";
                 }
                 block.shape = document.getElementById("shape").value;
                 if (!canHavePanel(block.shape)) block.clue = "";
