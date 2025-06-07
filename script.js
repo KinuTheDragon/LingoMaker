@@ -32,7 +32,7 @@ const COLORS = {
     magenta: "#ff00dc",
     "matte black": "repeating-linear-gradient(-45deg, #000000 0 10%, #555555 10% 20%)",
     midnight: "#000033",
-    mint: "#7fffc5",
+    mint: "#0dda99", // thanks katie!
     monochrome: "linear-gradient(#000000, #ffffff)",
     mustard: "#7f670a",
     navy: "#000070",
