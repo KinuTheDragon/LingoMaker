@@ -13,6 +13,7 @@ const COLORS = {
     burgundy: "#4d0340",
     celeste: "#8bd8dd",
     chartreuse: "#dfff00",
+    cinnamon: "#d2691e", // by mellingow
     cobalt: "#2400e0",
     cream: "#f7e4b6",
     crimson: "#ee0e3d",
