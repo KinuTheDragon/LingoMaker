@@ -52,6 +52,7 @@ const COLORS = {
     shade: "#330033",
     silver: "#bec2cb",
     "tea green": "#77dd77",
+    "tomato soup": "#fc5229", // mellingow walc
     verdant: "#18a469",
     white: "#e6e7e8",
     yellow: "#ffff00",
