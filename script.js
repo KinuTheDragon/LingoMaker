@@ -2,7 +2,7 @@ const HIDDEN_CHARS = /[a-zA-Z0-9]/g;
 
 const COLORS = {
     none: "#444",
-    amethyst: "radial-gradient(circle,rgba(225, 176, 247, 1) 0%, rgba(163, 0, 245, 1) 100%)", // special thanks to not without text for making this!
+    amethyst: "radial-gradient(circle, #e1b0f7, #a300f5)", // special thanks to not without text for making this!
     "anti-silver": "#2f2d51",
     apple: "#960000",
     auburn: "#840707",
