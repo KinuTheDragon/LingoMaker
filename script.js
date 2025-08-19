@@ -2,7 +2,8 @@ const HIDDEN_CHARS = /[a-zA-Z0-9]/g;
 
 const COLORS = {
     none: "#444",
-    amethyst: "radial-gradient(circle, #e1b0f7, #a300f5)", // special thanks to not without text for making this!
+    amber: "radial-gradient(circle, #de7e00, #9e5800)", // gem color
+    amethyst: "radial-gradient(circle, #c244ff, #a02ddc)", // special thanks to not without text and ylumi for making this and the other gem colors!
     "anti-silver": "#2f2d51",
     apple: "#960000",
     auburn: "#840707",
@@ -10,6 +11,7 @@ const COLORS = {
     black: "#000000",
     blue: "#003685",
     brass: "linear-gradient(#8c8651, #6c6035)",
+    bronze: "radial-gradient(circle, #854916, #6d370e)", // gem color
     brown: "#774d2b",
     burgundy: "#4d0340",
     celeste: "#8bd8dd",
@@ -19,7 +21,9 @@ const COLORS = {
     cream: "#f7e4b6",
     crimson: "#ee0e3d",
     cyan: "#00ffff",
+    diamond: "radial-gradient(circle, #c4dff1, #9cb2d1)", // gem color
     emerald: "#013500",
+    "emerald (gem)": "radial-gradient(circle, #025203, #024600)", // gem color
     fish: "#ff6452",
     glass: "repeating-linear-gradient(-45deg, #cccccc 0 15%, #eeeeee 15% 20%)",
     "golden coral": "linear-gradient(#ffac18, #fb5a17)",
@@ -36,9 +40,11 @@ const COLORS = {
     midnight: "#000033",
     mint: "#0dda99", // thanks katie!
     monochrome: "linear-gradient(#000000, #ffffff)",
+    moonstone: "radial-gradient(circle, #c1c1c1, #a0a0a0)", // gem color
     mustard: "#7f670a",
     navy: "#000070",
     nebula: "#c832ff",
+    obsidian: "radial-gradient(circle, #16182e, #02020e)", // gem color
     orange: "#e07e00",
     "pastel green": "#d3fac2",
     pink: "#d361c4",
@@ -48,10 +54,13 @@ const COLORS = {
     red: "#b82337",
     relish: "#2a5203",
     royal: "#3f3fd4",
+    ruby: "radial-gradient(circle, #e54e60, #d21b30)", // gem color
     salmon: "#ffc3c3",
+    sapphire: "radial-gradient(circle, #5666d0, #3342c6)", // gem color
     sea: "#5464ff",
     shade: "#330033",
     silver: "#bec2cb",
+    sunstone: "radial-gradient(circle, #fbff06, #b2b200)", // gem color
     "tea green": "#77dd77",
     "tomato soup": "#fc5229", // mellingow walc
     verdant: "#18a469",
